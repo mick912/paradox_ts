@@ -11,6 +11,7 @@ class UserFullInfoSerializer extends UserInfoSerializer
             'first_name' => '',
             'last_name' => '',
             'email' => '',
+            'age' => '',
             'role' => [$this, 'getRole'],
             'department' => [$this, 'getDepartment'],
             'address' => [$this, 'getAddress']

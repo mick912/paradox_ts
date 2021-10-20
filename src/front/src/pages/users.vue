@@ -14,7 +14,8 @@
         <users-table
                 :sort="params.sort"
                 v-if="!loading && $store.state.users.results.length > 0"
-                v-on:sort="orderUsers"
+                @sort="orderUsers"
+                @view="viewUser"
         ></users-table>
         <div class="clearfix">
             <pagination
@@ -24,17 +25,18 @@
                     class="float-right"
             ></pagination>
         </div>
+        <user-info ref="userInfo"></user-info>
     </div>
 </template>
 
 <script>
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
-import SearchInput from "../components/search-input.vue";
 
 export default {
     components: {
-        SearchInput,
         PulseLoader,
+        UserInfo: () => import("../components/user-info.vue"),
+        SearchInput: () => import("../components/search-input.vue"),
         Pagination: () => import("../components/pagination.vue"),
         UsersTable: () => import("../components/users-table.vue")
     },
@@ -71,6 +73,9 @@ export default {
         async search(value) {
             this.params.q = value;
             await this.getUsers(1);
+        },
+        viewUser(id) {
+            this.$refs.userInfo.show(id);
         }
     },
     created() {

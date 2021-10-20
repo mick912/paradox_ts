@@ -29,6 +29,9 @@ export default {
   body {
     margin: 0
   }
+  .container {
+    max-width: 1340px !important;
+  }
 </style>
 <style scoped>
   .navbar {

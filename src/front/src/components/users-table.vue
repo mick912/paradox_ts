@@ -10,12 +10,16 @@
                         <icon-sort :value="key === sort.field ? sort.direction : null"></icon-sort>
                     </div>
                 </th>
+                <th>&nbsp;</th>
             </tr>
         </thead>
         <tbody>
             <tr v-for="user in $store.state.users.results" :key="user.id">
                 <td  v-for="(field, key) in fields" :key="key + '-body'">
                     {{user[key]}}
+                </td>
+                <td>
+                    <button class="button button-clear" @click="$emit('view', user.id)">View</button>
                 </td>
             </tr>
         </tbody>
