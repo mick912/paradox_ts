@@ -4,7 +4,7 @@ use App\Controller\UsersController;
 
 return [
     'GET' => [
-        "/users/" => [UsersController::class, 'index'],
-        "/users/(:num)/" => [UsersController::class, 'retrieve']
+        "/api/users/" => [UsersController::class, 'index'],
+        "/api/users/(:num)/" => [UsersController::class, 'retrieve']
     ]
 ];

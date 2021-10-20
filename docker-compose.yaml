@@ -23,6 +23,7 @@ services:
      MYSQL_PASSWORD: password
   api:
     build: ./src/api/
+    image: pts-api
     container_name: pts-api-container
     environment:
       DB_DRIVER: mysql
@@ -39,5 +40,32 @@ services:
       - mysql
     volumes:
      - ./src/api/:/var/www/html/
+  migrations:
+    build: ./src/api/
+    image: pts-api
+    environment:
+      DB_DRIVER: mysql
+      DB_HOST: mysql
+      DB_USER: myuser
+      DB_PASS: password
+      DB_NAME: mydb
+      DB_PORT: 3306
+      DB_CHARSET: utf8
+      DB_COLLATION: utf8_general_ci
+    command: bash -c "php bin/app db:migrate && php bin/app seed:run"
+    depends_on:
+      - mysql
+    links:
+      - mysql
+    volumes:
+      - ./src/api/:/var/www/html/
+  front:
+    build: ./src/front/
+    container_name: pts-front-container
+    ports:
+      - 8010:80
+    environment:
+      __API_BASE_URL__: http://localhost:8005/api/
+
 
 
