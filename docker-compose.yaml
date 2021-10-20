@@ -55,6 +55,7 @@ services:
     command: bash -c "php bin/app db:migrate && php bin/app seed:run"
     depends_on:
       - mysql
+      - api
     links:
       - mysql
     volumes:
