@@ -9,6 +9,7 @@ Install
  - docker-compose up -d
  - docker-compose down
  - docker-compose up -d
+ - docker-compose up -d
  - open the link http://localhost:8010
 
 Structure:
