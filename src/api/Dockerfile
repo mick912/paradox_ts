@@ -8,4 +8,3 @@ RUN apk add bash
 RUN alias composer='php /usr/bin/composer'
 WORKDIR /var/www/html/
 COPY . .
-RUN composer update

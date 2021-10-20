@@ -7,8 +7,8 @@ services:
      - api
     ports:
      - 8005:80
-    volumes_from:
-     - api
+    volumes:
+      - ./src/api/:/var/www/html/
   mysql:
     image: mysql:5.7
     container_name: pts-mysql-container
@@ -21,6 +21,11 @@ services:
      MYSQL_DATABASE: mydb
      MYSQL_USER: myuser
      MYSQL_PASSWORD: password
+  composer:
+    build: ./src/api/
+    command: composer install
+    volumes:
+      - ./src/api/:/var/www/html/
   api:
     build: ./src/api/
     container_name: pts-api-container
