@@ -24,7 +24,6 @@ export default {
     actions: {
         async getList({commit}, params) {
             const {data} = await api.get(config.users.list, {params});
-            console.log(data);
             commit('SET_USERS', data);
         }
     },

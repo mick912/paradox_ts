@@ -3,7 +3,11 @@
         <div class="loader">
             <pulse-loader :loading="loading" color="#9b4dca"></pulse-loader>
         </div>
-        <users-table v-if="!loading && $store.state.users.results.length > 0"></users-table>
+        <users-table
+                :sort="params.sort"
+                v-if="!loading && $store.state.users.results.length > 0"
+                v-on:sort="orderUsers"
+        ></users-table>
         <div class="clearfix">
             <pagination
                     :current="$store.state.users.currentPage"
@@ -28,15 +32,30 @@ export default {
     data() {
         return {
             loading: false,
+            params: {
+                page: 1,
+                sort: {
+                    field: 'first_name',
+                    direction: 'ASC'
+                }
+            }
         }
     },
     methods: {
-      async getUsers(page) {
-          page = page || 1;
-          this.loading = true;
-          await this.$store.dispatch('users/getList', {page});
-          this.loading = false;
-      }
+        async getUsers(page) {
+            this.params.page = page || 1;
+            this.loading = true;
+            const params = {
+                page: this.params.page,
+                order: this.params.sort.direction === 'DESC' ? '-' + this.params.sort.field : this.params.sort.field,
+            };
+            await this.$store.dispatch('users/getList', params);
+            this.loading = false;
+        },
+        async orderUsers({field, direction}) {
+            this.params.sort = {field, direction};
+            await this.getUsers(1);
+        }
     },
     created() {
         this.getUsers();
