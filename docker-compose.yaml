@@ -61,6 +61,8 @@ services:
   front:
     build: ./src/front/
     container_name: pts-front-container
+    depends_on:
+      - api
     ports:
       - 8010:80
     environment:
