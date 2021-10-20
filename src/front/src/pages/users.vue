@@ -1,6 +1,9 @@
 <template>
     <div class="container users-page">
-        <users-table></users-table>
+        <div class="loader">
+            <pulse-loader :loading="loading" color="#9b4dca"></pulse-loader>
+        </div>
+        <users-table v-if="!loading && $store.state.users.results.length > 0"></users-table>
         <div class="clearfix">
             <pagination
                     :current="$store.state.users.currentPage"
@@ -13,13 +16,13 @@
 </template>
 
 <script>
-import UsersTable from "../components/users-table.vue";
-import Pagination from "../components/pagination.vue";
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 
 export default {
     components: {
-        Pagination,
-        UsersTable
+        PulseLoader,
+        Pagination: () => import("../components/pagination.vue"),
+        UsersTable: () => import("../components/users-table.vue")
     },
     name: 'users-page',
     data() {
@@ -40,3 +43,12 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+    .loader {
+        text-align: center;
+    }
+    .loader > * {
+        margin: 400px auto;
+    }
+</style>
