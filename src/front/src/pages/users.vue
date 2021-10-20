@@ -1,26 +1,37 @@
 <template>
     <div class="container users-page">
-        <users-list></users-list>
+        <users-table></users-table>
+        <div class="clearfix">
+            <pagination
+                    :current="$store.state.users.currentPage"
+                    :total="$store.state.users.total"
+                    v-on:page-change="getUsers"
+                    class="float-right"
+            ></pagination>
+        </div>
     </div>
 </template>
 
 <script>
-import UsersList from "../components/users-list.vue";
+import UsersTable from "../components/users-table.vue";
+import Pagination from "../components/pagination.vue";
 
 export default {
-    components: {UsersList},
+    components: {
+        Pagination,
+        UsersTable
+    },
     name: 'users-page',
     data() {
         return {
             loading: false,
-            page: 1,
         }
     },
     methods: {
       async getUsers(page) {
-          this.page = page || 1;
+          page = page || 1;
           this.loading = true;
-          await this.$store.dispatch('users/getList');
+          await this.$store.dispatch('users/getList', {page});
           this.loading = false;
       }
     },

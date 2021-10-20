@@ -23,6 +23,6 @@
 
 <script>
 export default {
-    name: 'users-list',
+    name: 'users-table',
 }
 </script>
