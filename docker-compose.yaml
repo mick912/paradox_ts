@@ -1,0 +1,43 @@
+version: '2.1'
+services:
+  nginx:
+    build: ./nginx/
+    container_name: pts-nginx-container
+    links:
+     - api
+    ports:
+     - 8005:80
+    volumes_from:
+     - api
+  mysql:
+    image: mysql:5.7
+    container_name: pts-mysql-container
+    ports:
+    - 3307:3306
+    volumes:
+      - ./data/db3:/var/lib/mysql
+    environment:
+     MYSQL_ROOT_PASSWORD: password
+     MYSQL_DATABASE: mydb
+     MYSQL_USER: myuser
+     MYSQL_PASSWORD: password
+  api:
+    build: ./src/api/
+    container_name: pts-api-container
+    environment:
+      DB_DRIVER: mysql
+      DB_HOST: mysql
+      DB_USER: myuser
+      DB_PASS: password
+      DB_NAME: mydb
+      DB_PORT: 3306
+      DB_CHARSET: utf8
+      DB_COLLATION: utf8_general_ci
+    expose:
+      - 9000
+    links:
+      - mysql
+    volumes:
+     - ./src/api/:/var/www/html/
+
+

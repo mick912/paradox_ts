@@ -1,0 +1,20 @@
+{
+  "require": {
+    "php": ">=7.4.0",
+    "fzaninotto/faker": "^1.9"
+  },
+  "autoload": {
+    "psr-4": {
+      "Core\\": "Core",
+      "App\\": "App",
+      "bin\\": "bin"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "*",
+    "illuminate/container": "^8.64",
+    "illuminate/pagination": "^8.64",
+    "illuminate/database": "^8.64",
+    "illuminate/events": "^8.64"
+  }
+}

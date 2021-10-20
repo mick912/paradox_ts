@@ -1,0 +1,58 @@
+#!/usr/bin/env php
+<?php
+
+use Illuminate\Container\Container;
+use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Database\Connection;
+use Symfony\Component\Console\Application;
+use Illuminate\Contracts\Events\Dispatcher as EventsContract;
+use Illuminate\Events\Dispatcher as EventsDispatcher;
+
+/**
+ * gundi CLI
+ */
+
+define('ROOT', __DIR__ . '/..'  . DIRECTORY_SEPARATOR);
+define('APP_DIR', ROOT . 'App' . DIRECTORY_SEPARATOR);
+define('DIR_SETTING', APP_DIR . 'settings'. DIRECTORY_SEPARATOR);
+define('MIGRATIONS_DIR', APP_DIR . 'Migrations'. DIRECTORY_SEPARATOR);
+define('SEEDS_DIR', APP_DIR . 'Seed'. DIRECTORY_SEPARATOR);
+
+
+require_once  __DIR__ . '/../vendor/autoload.php';
+require_once(DIR_SETTING . 'env.php');
+
+/**
+ * Register services
+ */
+$container = new Container();
+$container->instance(Container::class, $container);
+$container->instance('\Illuminate\Contracts\Container\Container', $container);
+$container->instance('\Illuminate\Contracts\Foundation\Application', $container);
+$container->singleton('config', Core\Setting\Setting::class);
+$container->singleton(EventsContract::class, EventsDispatcher::class);
+$container->singleton("events", EventsDispatcher::class);
+
+/**
+ * bind DB connection
+ */
+$capsule = new Capsule($container);
+$settings = $container['config'];
+$capsule->addConnection($settings['database.connections'][DB_DRIVER]);
+
+$capsule->setAsGlobal();
+$capsule->setEventDispatcher($container['events']);
+$capsule->bootEloquent();
+$container->instance('Connection', $capsule);
+$container->instance(Connection::class, $capsule);
+
+
+$app = new Application('app', '1.0.0');
+
+$app->add(new bin\Command\Migration\Make('make:migration'));
+$app->add(new bin\Command\Migration\Run('db:migrate'));
+$app->add(new bin\Command\Migration\Reset('db:reset'));
+$app->add(new bin\Command\Seed\Run('seed:run', $container));
+$app->add(new bin\Command\Seed\Make('make:seed'));
+
+$app->run();
