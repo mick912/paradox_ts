@@ -1,6 +1,10 @@
 {
   "require": {
     "php": ">=7.4.0",
+    "illuminate/container": "^8.64",
+    "illuminate/pagination": "^8.64",
+    "illuminate/database": "^8.64",
+    "illuminate/events": "^8.64",
     "fzaninotto/faker": "^1.9"
   },
   "autoload": {
@@ -11,10 +15,6 @@
     }
   },
   "require-dev": {
-    "phpunit/phpunit": "*",
-    "illuminate/container": "^8.64",
-    "illuminate/pagination": "^8.64",
-    "illuminate/database": "^8.64",
-    "illuminate/events": "^8.64"
+    "phpunit/phpunit": "*"
   }
 }
