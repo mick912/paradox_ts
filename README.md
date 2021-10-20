@@ -6,7 +6,9 @@ Install
  - clone the project
  - cd to the project`s dir
  - docker-compose build
- - docker-compose up -d #run this command 2 times
+ - docker-compose up -d
+ - docker-compose down
+ - docker-compose up -d
  - open the link http://localhost:8010
 
 Structure:
